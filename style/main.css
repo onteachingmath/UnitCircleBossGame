@@ -1,0 +1,98 @@
+/* General Layout */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background-color: #e7ecf1;
+  }
+  
+  /* Game Container fills full height */
+  #game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;  /* Push to top */
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 40px;
+  }
+  
+  
+  
+  
+  #game-screen {
+    background-color: white;
+    border: 4px solid #333;
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 700px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  
+    /* 👇 Fix here */
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+  
+  
+  
+  /* Center the intro screen vertically and horizontally */
+  #intro-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  #intro-screen input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 250px;
+  }
+  
+  .character-select {
+    margin: 15px 0;
+  }
+  
+  .character-select label {
+    margin-right: 15px;
+    font-weight: bold;
+  }
+  
+  #start-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background-color 0.3s;
+  }
+  
+  #start-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Hide any .hidden screens */
+  .hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  
+  
+  /* Game title styling */
+  #game-title {
+    font-family: 'Press Start 2P', cursive;
+    color: #1f2937;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit Circle Boss Game</title>
+  
+    <!-- 🧙 Fancy Fantasy Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
+  
+    <!-- 🔢 MathJax for LaTeX rendering -->
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [['\\(', '\\)']] },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  
+    <!-- 🧙 Fantasy CSS Theme -->
+    <style>
+      body {
+        font-family: 'Cinzel', serif;
+        background: #111 url('https://images.unsplash.com/photo-1607082340924-cd032bf6498b?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
+background-size: cover;
+
+        color: #f4e7c5;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+  
+      #app-root {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+  
+      #intro-screen, #game-screen {
+        width: 100%;
+        max-width: 720px;
+      }
+  
+      .hidden {
+        display: none !important;
+      }
+  
+      .slide-in {
+        background: rgba(20, 12, 6, 0.92);
+        border: 2px solid #bfa76f;
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 800px;
+        margin: auto;
+        box-shadow: 0 0 20px #ffcc00;
+        font-family: 'Cinzel', serif;
+        animation: fadeIn 0.6s ease-in-out;
+      }
+  
+      h2 {
+        font-size: 28px;
+        color: #ffd700;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px #000;
+      }
+  
+      .answer-btn, .quiz-btn {
+        background: #6b4c1b;
+        border: 2px solid #cfa75e;
+        color: #fff;
+        font-size: 18px;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        box-shadow: 0 0 10px #ffcc00;
+        transition: background 0.3s, transform 0.2s;
+      }
+  
+      .answer-btn:hover, .quiz-btn:hover {
+        background: #a6752d;
+        transform: scale(1.05);
+      }
+  
+      @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+  
+      table {
+        background: rgba(40, 30, 10, 0.8);
+        border-collapse: collapse;
+      }
+  
+      td, th {
+        border: 1px solid #cfa75e;
+        padding: 10px;
+        color: #fdf6d3;
+      }
+  
+      #game-title {
+        text-align: center;
+        font-family: 'Cinzel', serif;
+        font-size: 24px;
+        color: #ffd700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px #000;
+      }
+      .level-button {
+  padding: 15px 25px;
+  font-size: 18px;
+  border-radius: 12px;
+  font-family: 'Cinzel', serif;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ffcc00;
+  border: 2px solid #cfa75e;
+  background-color: #4a2f0b;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.level-button:hover:enabled {
+  background-color: #d4a94b;
+  transform: scale(1.05);
+}
+
+.level-button.locked {
+  background-color: #222;
+  color: #999;
+  border: 2px solid #555;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.5;
+}
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  </head>
+  
+<body>
+  <div id="app-root">
+
+    <!-- Intro Screen -->
+    <div class="screen" id="intro-screen">
+      <h1 id="game-title">🎯 Unit Circle Boss Game</h1>
+      <label for="player-name">What is your name, hero?</label><br/>
+      <input id="player-name" placeholder="Enter your name" type="text"/><br/><br/>
+      <p>Choose your character:</p>
+      <div class="character-select">
+        <label><input checked="" name="character" type="radio" value="dirk"/> Dirk the Daring</label>
+        <label><input name="character" type="radio" value="daphne"/> Daphne the Daring</label>
+      </div>
+      <button id="start-btn">Start Your Quest</button>
+    </div>
+  
+    <!-- ✅ Map Screen -->
+    <div class="screen hidden" id="map-screen">
+      <h2 style="text-align:center; color:#ffd700;">🗺️ Unit Circle Quest Map</h2>
+      <div id="level-map" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px;">
+        <!-- Level buttons will be dynamically added here -->
+      </div>
+    </div>
+  
+    <!-- Game UI -->
+    <div class="screen hidden" id="game-screen">
+      <div id="game-header">
+        <h2 id="level-title"></h2>
+        <p id="player-info"></p>
+      </div>
+      <div id="game-area">
+        <div id="game-area" style="position: relative;">
+
+        <!-- Dynamic content goes here (circle, questions, etc.) -->
+      </div>
+      <div id="game-feedback"></div>
+    </div>
+  
+  </div>
+  
+<!-- Scripts -->
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="scripts/levels/level1.js"></script>
+<script src="scripts/levels/level2.js"></script>
+<script src="scripts/levels/level3.js"></script>
+<script src="scripts/levels/level4.js"></script>
+<script src="scripts/levels/level5.js"></script>
+<script src="scripts/levels/level6.js"></script>
+<script src="scripts/levels/level7.js"></script>
+<script src="scripts/bootcamps.js" type="module"></script>
+
+
+
+<script src="scripts/ui.js"></script>
+<script src="scripts/unit_circle.js"></script>
+<script src="scripts/map.js"></script>
+
+<script src="scripts/game.js" type="module"></script>
+<div id="dev-launcher" style="display:none; padding: 20px; background: #222; color: white;">
+  <h2>🚀 Dev Launcher</h2>
+  <label for="dev-level">Level #:</label>
+  <input id="dev-level" type="number" min="1" max="7" value="1" style="width: 50px;" />
+  <button onclick="devLaunchLevel()">Launch Level</button>
+  <button onclick="devLaunchBootcamp()">Launch Bootcamp</button>
+</div>
+
+
+</body>
+</html>

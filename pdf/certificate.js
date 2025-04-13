@@ -1,0 +1,1 @@
+// Generate final certificate using jsPDF or similar
