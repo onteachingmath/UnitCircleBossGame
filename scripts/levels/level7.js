@@ -69,17 +69,25 @@ function runLevel7(player, handleResult) {
   }
 
   function startTimer() {
-    timeLeft = 30;
-    document.getElementById("timer").textContent = `⏱️ ${timeLeft}s`;
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      document.getElementById("timer").textContent = `⏱️ ${timeLeft}s`;
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        showGetReady("⏱️ Time's up!");
-      }
-    }, 1000);
-  }
+  const totalDuration = 30;
+  const startTime = Date.now();
+
+  clearInterval(timerInterval); // Always clear first
+  timerInterval = setInterval(() => {
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    const remaining = totalDuration - elapsedSeconds;
+
+    if (remaining >= 0) {
+      document.getElementById("timer").textContent = `⏱️ ${remaining}s`;
+    }
+
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      showGetReady("⏱️ Time's up!");
+    }
+  }, 100); // Check 10x per second for accuracy
+}
+
 
   function showGetReady(message) {
     gameArea.innerHTML = `<div class='level-header'><p>${message}</p><p>⚔️ Prepare for your next challenge...</p></div>`;
