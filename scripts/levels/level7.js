@@ -87,7 +87,16 @@ function runLevel7(player, handleResult) {
       handleAnswer(null);
     }, 3000);
   }
-
+  function setupAnswerButtons() {
+    document.querySelectorAll(".answer-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        clearInterval(timerInterval);
+        document.querySelectorAll(".answer-btn").forEach(b => b.disabled = true);
+        handleAnswer(parseInt(btn.dataset.index));
+      });
+    });
+  }
+  
   function renderQuestion() {
     const q = selectedQuestions[currentQuestionIndex];
   
@@ -113,10 +122,19 @@ function runLevel7(player, handleResult) {
 
     if (window.MathJax && MathJax.typesetPromise && MathJax.typesetClear) {
       MathJax.typesetClear([gameArea]);
-      MathJax.typesetPromise([gameArea]).catch(err => console.error("MathJax typeset failed:", err));
+      MathJax.typesetPromise([gameArea])
+        .then(() => {
+          setupAnswerButtons();  // ⏬ 👇 Set up buttons only AFTER render
+          requestAnimationFrame(() => {
+            startTimer();  // 🕒 Start timer after DOM and MathJax are ready
+          });
+        })
+        .catch(err => console.error("MathJax typeset failed:", err));
+    } else {
+      setupAnswerButtons();
+      startTimer();  // fallback if MathJax isn't present
     }
-
-    startTimer();
+    
 
     document.querySelectorAll(".answer-btn").forEach(btn => {
       btn.addEventListener("click", () => {
