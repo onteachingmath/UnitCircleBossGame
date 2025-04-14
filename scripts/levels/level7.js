@@ -112,12 +112,9 @@ function runLevel7(player, handleResult) {
   
 
     if (window.MathJax && MathJax.typesetPromise && MathJax.typesetClear) {
-  setTimeout(() => {
-    MathJax.typesetClear([gameArea]);
-    MathJax.typesetPromise([gameArea]).catch(err => console.error("MathJax typeset failed:", err));
-  }, 0);
-}
-
+      MathJax.typesetClear([gameArea]);
+      MathJax.typesetPromise([gameArea]).catch(err => console.error("MathJax typeset failed:", err));
+    }
 
     startTimer();
 
