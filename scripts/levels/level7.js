@@ -68,25 +68,28 @@ function runLevel7(player, handleResult) {
     return [...array].sort(() => Math.random() - 0.5);
   }
 
-  function startTimer() {
-  const totalDuration = 30;
-  const startTime = Date.now();
+ function startTimer(durationInSeconds = 30) {
+  const startTime = performance.now(); // More accurate than Date.now()
+  const endTime = startTime + durationInSeconds * 1000;
 
-  clearInterval(timerInterval); // Always clear first
+  clearInterval(timerInterval); // Clean start
+
   timerInterval = setInterval(() => {
-    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
-    const remaining = totalDuration - elapsedSeconds;
+    const now = performance.now();
+    const remaining = Math.ceil((endTime - now) / 1000);
 
     if (remaining >= 0) {
-      document.getElementById("timer").textContent = `⏱️ ${remaining}s`;
+      const timerEl = document.getElementById("timer");
+      if (timerEl) timerEl.textContent = `⏱️ ${remaining}s`;
     }
 
     if (remaining <= 0) {
       clearInterval(timerInterval);
       showGetReady("⏱️ Time's up!");
     }
-  }, 100); // Check 10x per second for accuracy
+  }, 100); // More frequent checks = smoother result
 }
+
 
 
   function showGetReady(message) {
