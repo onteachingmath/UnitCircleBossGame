@@ -127,7 +127,10 @@ function runLevel7(player, handleResult) {
       MathJax.typesetPromise([gameArea]).catch(err => console.error("MathJax typeset failed:", err));
     }
 
-    startTimer();
+    setTimeout(() => {
+  startTimer();
+}, 100);
+
 
     document.querySelectorAll(".answer-btn").forEach(btn => {
       btn.addEventListener("click", () => {
