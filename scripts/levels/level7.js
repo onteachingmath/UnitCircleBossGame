@@ -3,7 +3,7 @@
 function runLevel7(player, handleResult) {
   const gameArea = document.getElementById("game-area");
 
-  const questionBank = [
+ const questionBank = [
   // SINE (Boss Level)
   { questionLatex: '\\sin(30^\\circ)', choices: ['\\frac{1}{2}', '\\sqrt{3}', '\\frac{\\sqrt{3}}{2}', '1'], correctIndex: 0, topic: 'special-angles' },
   { questionLatex: '\\sin(45^\\circ)', choices: ['\\frac{\\sqrt{2}}{2}', '\\frac{1}{2}', '1', '0'], correctIndex: 0, topic: 'special-angles' },
@@ -55,7 +55,6 @@ function runLevel7(player, handleResult) {
 ];
 
 
-
   let selectedQuestions = [];
   let currentQuestionIndex = 0;
   let correctCount = 0;
@@ -68,6 +67,8 @@ function runLevel7(player, handleResult) {
     return [...array].sort(() => Math.random() - 0.5);
   }
 
+  // Commented out the timer logic below
+  /*
   function startTimer() {
     timeLeft = 30;
     document.getElementById("timer").textContent = `⏱️ ${timeLeft}s`;
@@ -80,6 +81,7 @@ function runLevel7(player, handleResult) {
       }
     }, 1000);
   }
+  */
 
   function showGetReady(message) {
     gameArea.innerHTML = `<div class='level-header'><p>${message}</p><p>⚔️ Prepare for your next challenge...</p></div>`;
@@ -87,30 +89,29 @@ function runLevel7(player, handleResult) {
       handleAnswer(null);
     }, 3000);
   }
+
   function setupAnswerButtons() {
     document.querySelectorAll(".answer-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        clearInterval(timerInterval);
+        // clearInterval(timerInterval); // ⛔ Timer disabled
         document.querySelectorAll(".answer-btn").forEach(b => b.disabled = true);
         handleAnswer(parseInt(btn.dataset.index));
       });
     });
   }
-  
+
   function renderQuestion() {
     const q = selectedQuestions[currentQuestionIndex];
-  
-    // 🔀 Randomize choices and recalculate correct index
     const originalChoices = [...q.choices];
     const shuffledChoices = shuffleArray(originalChoices);
     const newCorrectIndex = shuffledChoices.indexOf(q.choices[q.correctIndex]);
     q.choices = shuffledChoices;
     q.correctIndex = newCorrectIndex;
-  
+
     gameArea.innerHTML = `
       <div class="level-header">
-        <h2>Final Boss Level 7: Timed Unit Circle Challenge</h2>
-        <div id="timer">⏱️ 30s</div>
+        <h2>Final Boss Level 7: Unit Circle Challenge</h2>
+        <!-- <div id="timer">⏱️ 30s</div> -->
         <p>Question ${currentQuestionIndex + 1} of 10:</p>
         <div class="question">\\( ${q.questionLatex} \\)</div>
         <div class="answers" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 20px;">
@@ -118,31 +119,19 @@ function runLevel7(player, handleResult) {
         </div>
       </div>
     `;
-  
 
     if (window.MathJax && MathJax.typesetPromise && MathJax.typesetClear) {
       MathJax.typesetClear([gameArea]);
       MathJax.typesetPromise([gameArea])
         .then(() => {
-          setupAnswerButtons();  // ⏬ 👇 Set up buttons only AFTER render
-          requestAnimationFrame(() => {
-            startTimer();  // 🕒 Start timer after DOM and MathJax are ready
-          });
+          setupAnswerButtons();
+          // requestAnimationFrame(() => startTimer()); // ⛔ Timer disabled
         })
         .catch(err => console.error("MathJax typeset failed:", err));
     } else {
       setupAnswerButtons();
-      startTimer();  // fallback if MathJax isn't present
+      // startTimer(); // ⛔ Timer disabled
     }
-    
-
-    document.querySelectorAll(".answer-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        clearInterval(timerInterval);
-        document.querySelectorAll(".answer-btn").forEach(b => b.disabled = true);
-        handleAnswer(parseInt(btn.dataset.index));
-      });
-    });
   }
 
   function handleAnswer(selectedIndex) {
@@ -159,8 +148,6 @@ function runLevel7(player, handleResult) {
       renderQuestion();
     } else {
       showFinalResults();
-      
-      
     }
   }
 
@@ -179,16 +166,14 @@ function runLevel7(player, handleResult) {
     const recommendation = failedAttempts >= 2 ? suggestBootcamp() : null;
 
     let resultHTML = `
-  <div class="level-header">
-    <h2>🎯 Final Boss Level 7 Results</h2>
-    <h3>Your Score: ${correctCount} / 10</h3>
-
+      <div class="level-header">
+        <h2>🎯 Final Boss Level 7 Results</h2>
+        <h3>Your Score: ${correctCount} / 10</h3>
     `;
 
     if (passed) {
       resultHTML += `<p>🏆 You are victorious, math warrior!</p>`;
       generateVictoryPDF();
-
     } else {
       resultHTML += `<p>⚠️ You must train further.</p>`;
       if (recommendation) {
@@ -213,46 +198,40 @@ function runLevel7(player, handleResult) {
 
     handleResult(passed ? "correct" : "incorrect");
   }
+
   function generateVictoryPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-  
+
     const date = new Date().toLocaleString();
     const topicSummary = incorrectTopics.length === 0 
       ? "None! All topics mastered." 
       : [...new Set(incorrectTopics)].join(", ");
     const name = player.name || "Unknown Hero";
-  
-    // 🧾 Victory Header
+
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
     doc.text("Final Boss Level 7 Victory Scroll", 20, 20);
-  
-    // 🧑 Player Info
     doc.setFontSize(14);
     doc.text(`Name: ${name}`, 20, 30);
     doc.text(`Date: ${date}`, 20, 38);
     doc.text(`Final Score: ${correctCount} / 10`, 20, 46);
-  
-    // 📚 Topics
+
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
     doc.text("Topics to Review (if any):", 20, 58);
     doc.text(topicSummary, 20, 66);
-  
-    // 🏆 Victory Message (No name here to avoid encoding issues)
+
     doc.setFont("courier", "bold");
     doc.setFontSize(16);
     doc.text("You conquered the Unit Circle Boss Challenge!", 20, 85);
     doc.setFont("courier", "italic");
     doc.text("Well done, math warrior!", 20, 95);
-  
-    // Save
+
     doc.save("Level7_Victory_Report.pdf");
   }
-  
-  
-  // Start the game
+
+  // Launch game
   selectedQuestions = shuffleArray(questionBank).slice(0, 10);
   renderQuestion();
 }
